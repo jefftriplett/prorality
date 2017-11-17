@@ -11,6 +11,7 @@
 
 {% block javascript %}
 {{ block.super }}
+{% if object.allow_comments %}
 <script src="{% static 'vendor/side-comments/side-comments.min.js' %}"></script>
 <script>
 // First require it.
@@ -51,6 +52,7 @@ var existingComments = [
 ];
 // Then, create a new SideComments instance, passing in the wrapper element and the optional the current user and any existing comments.
 sideComments = new SideComments('#commentable-area', currentUser, existingComments);
+{% endif %}
 </script>
 {% endblock javascript %}
 
@@ -66,10 +68,12 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 <div id="commentable-area">
 {{ object.body }}
 
+{% if object.allow_comments %}
 <!-- example of what the html markup should look like -->
 <p data-section-id="1" class="commentable-section">
   This is a section that can be commented on.
 </p>
+{% endif %}
 </div>
 {% endif %}
 
@@ -80,6 +84,7 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 <hr>
 
+{% if object.allow_comments %}
 <!-- comments list -->
 
 <h3>Comments</h3>
@@ -111,6 +116,8 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
   </form>
 {% else %}
   <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+{% endif %}
+
 {% endif %}
 
 <!-- vote information -->

@@ -26,6 +26,7 @@ class Proposal(ContentManageable):
                        null=True, blank=True)
     url = models.TextField(null=True, blank=True)
     closing_date = models.DateField(null=True, blank=True)
+    allow_comments = models.BooleanField(default=False)
 
     history = HistoricalRecords(excluded_fields=['_body_rendered', 'body_markup_type'])
 

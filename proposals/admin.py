@@ -9,8 +9,12 @@ from whatnots.admin import ContentManageableAdmin
 class ProposalAdmin(ContentManageableAdmin, SimpleHistoryAdmin):
     list_display = [
         'subject',
+        'allow_comments',
         'created_by',
         'created',
+    ]
+    list_filter = [
+        'allow_comments',
     ]
     raw_id_fields = [
         'organization',
