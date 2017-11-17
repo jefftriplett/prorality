@@ -1,0 +1,21 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+django = "*"
+django-environ = "*"
+django-reversion = "*"
+django-simple-history = "*"
+django-markupfield = "*"
+markdown = "*"
+django-organizations = "*"
+django-extensions = "*"
+hashids = "*"
+
+
+[dev-packages]

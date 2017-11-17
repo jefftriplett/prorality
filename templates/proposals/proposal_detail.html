@@ -1,0 +1,34 @@
+{% extends "proposals/base.html" %}
+
+{% block content %}
+
+<h2 class="display-3">{{ object.subject }}</h2>
+
+{% if object.closing_date %}
+<h4>{{ object.closing_date }} closing date ({{ object.closing_date|timeuntil }})</h4>
+{% endif %}
+
+{% if object.body %}
+{{ object.body }}
+{% endif %}
+
+
+{% if object.url %}
+{{ object.url }}
+{% endif %}
+
+<p>{{ object.vote_set.count }} vote{{ object.vote_set.count|pluralize }}</p>
+
+{% if object.vote_set.count %}
+<ul>
+    {% for vote in object.vote_set.all %}
+        <li>{{ vote }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<p>{{ object.organization.slug }}</p>
+
+<p>{{ object.hashid }}</p>
+
+{% endblock content %}
