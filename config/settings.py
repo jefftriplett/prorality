@@ -34,19 +34,26 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 # Application definition
 
+# Django apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 ]
 
+# Third-party apps
+
 INSTALLED_APPS += [
-    'simple_history',
+    'django_comments',
     'organizations',
+    'simple_history',
 ]
+
+# Our apps
 
 INSTALLED_APPS += [
     'proposals',
@@ -141,6 +148,9 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
+
+# django.contribute.sites for Django-Comments
+SITE_ID = 1
 
 # Our settings
 

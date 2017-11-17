@@ -1,5 +1,59 @@
 {% extends "proposals/base.html" %}
 
+{% load comments %}
+{% load static %}
+
+{% block css %}
+{{ block.super }}
+<link href="{% static 'vendor/side-comments/side-comments.min.css' %}" rel="stylesheet">
+<link href="{% static 'vendor/side-comments/themes/default-theme.css' %}" rel="stylesheet">
+{% endblock css %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'vendor/side-comments/side-comments.min.js' %}"></script>
+<script>
+// First require it.
+var SideComments = require('side-comments');
+
+var currentUser = {
+  id: 1,
+  avatarUrl: "https://f.cl.ly/items/0s1a0q1y2Z2k2I193k1y/default-user.png",
+  name: "{{ request.user.username }}"
+};
+
+var existingComments = [
+  {
+    "sectionId": "1",
+    "comments": [
+      {
+        "authorAvatarUrl": "https://f.cl.ly/items/1W303Y360b260u3v1P0T/jon_snow_small.png",
+        "authorName": "Jon Sno",
+        "comment": "I'm Ned Stark's bastard. Related: I know nothing."
+      },
+      {
+        "authorAvatarUrl": "https://f.cl.ly/items/2o1a3d2f051L0V0q1p19/donald_draper.png",
+        "authorName": "Donald Draper",
+        "comment": "I need a scotch."
+      }
+    ]
+  },
+  {
+    "sectionId": "3",
+    "comments": [
+      {
+        "authorAvatarUrl": "https://f.cl.ly/items/0l1j230k080S0N1P0M3e/clay-davis.png",
+        "authorName": "Senator Clay Davis",
+        "comment": "These Side Comments are incredible. Sssshhhiiiiieeeee."
+      }
+    ]
+  }
+];
+// Then, create a new SideComments instance, passing in the wrapper element and the optional the current user and any existing comments.
+sideComments = new SideComments('#commentable-area', currentUser, existingComments);
+</script>
+{% endblock javascript %}
+
 {% block content %}
 
 <h2 class="display-3">{{ object.subject }}</h2>
@@ -9,13 +63,57 @@
 {% endif %}
 
 {% if object.body %}
+<div id="commentable-area">
 {{ object.body }}
+
+<!-- example of what the html markup should look like -->
+<p data-section-id="1" class="commentable-section">
+  This is a section that can be commented on.
+</p>
+</div>
 {% endif %}
 
 
 {% if object.url %}
 {{ object.url }}
 {% endif %}
+
+<hr>
+
+<!-- comments list -->
+
+<h3>Comments</h3>
+
+{% render_comment_list for object %}
+
+<hr>
+
+<!-- comments form -->
+
+<h3>Post a Comment</h3>
+
+{% if user.is_authenticated %}
+  {% get_comment_form for object as form %}
+  <form action="{% comment_form_target %}" method="POST">
+  <div class="form-group">
+    {% csrf_token %}
+    {{ form.comment }}
+    {{ form.honeypot }}
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+  </div>
+  <div class="form-group">
+    <input type="hidden" name="next" value="{{ object.get_absolute_url }}" />
+    <button type="submit" id="id_submit" class="btn btn-primary">Add comment</button>
+  </div>
+  </form>
+{% else %}
+  <p>Please <a href="{% url 'auth_login' %}">log in</a> to leave a comment.</p>
+{% endif %}
+
+<!-- vote information -->
 
 <p>{{ object.vote_set.count }} vote{{ object.vote_set.count|pluralize }}</p>
 

@@ -77,3 +77,8 @@ body {
     border-bottom: 0;
   }
 }
+
+/* hide our honey-pot field */
+#id_honeypot {
+  display: none;
+}

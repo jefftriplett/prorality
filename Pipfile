@@ -16,6 +16,7 @@ markdown = "*"
 django-organizations = "*"
 django-extensions = "*"
 hashids = "*"
+django-contrib-comments = "*"
 
 
 [dev-packages]
