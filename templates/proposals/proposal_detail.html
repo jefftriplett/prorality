@@ -136,4 +136,11 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 <p>{{ object.hashid }}</p>
 
+
+<form action="{{ object.get_proposal_vote_form_url }}" method="post">
+  {% csrf_token %}
+  {{ form.as_p}}
+  <button type="submit">Vote</button>
+</form>
+
 {% endblock content %}
