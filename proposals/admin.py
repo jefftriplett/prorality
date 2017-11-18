@@ -22,3 +22,16 @@ class ProposalAdmin(ContentManageableAdmin, SimpleHistoryAdmin):
     readonly_fields = [
         'hashid',
     ]
+
+
+@admin.register(models.Vote)
+class VoteAdmin(ContentManageableAdmin, SimpleHistoryAdmin):
+    list_display = [
+        '__str__',
+        'created_by',
+        'created',
+    ]
+    raw_id_fields = [
+        'proposal',
+        'user',
+    ]

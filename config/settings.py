@@ -57,7 +57,6 @@ INSTALLED_APPS += [
 
 INSTALLED_APPS += [
     'proposals',
-    'votes',
 ]
 
 MIDDLEWARE = [

@@ -39,6 +39,12 @@ class Proposal(ContentManageable):
             'hashid': self.hashid,
         })
 
+    def get_proposal_vote_form_url(self):
+        return reverse('proposals:proposal_vote_form', kwargs={
+            'organization_slug': self.organization.slug,
+            'hashid': self.hashid,
+        })
+
     def get_hashid(self):
         hashids = Hashids(salt=settings.HASHID_SALT, min_length=settings.HASHID_MIN_LENGTH)
         return hashids.encode(self.id)
@@ -49,3 +55,30 @@ class Proposal(ContentManageable):
             self.hashid = self.get_hashid()
             self.save()
         return obj
+
+
+VOTE_CHOICES = (
+    (0, "+1: Yes, I agree"),
+    (1, "+0: I don't feel strongly about it, but I'm okay with this."),
+    (2, "-0: I won't get in the way, but I'd rather we didn't do this."),
+    (3, "-1: I object on the following grounds"),
+)
+
+
+class Vote(ContentManageable):
+    proposal = models.ForeignKey('proposals.Proposal', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    vote = models.IntegerField(choices=VOTE_CHOICES)
+
+    history = HistoricalRecords()
+
+    class Meta:
+        unique_together = (
+            ('proposal', 'user'),
+        )
+
+    def __str__(self):
+        return '{vote} from {proposal} on {proposal}'.format(
+            vote=self.get_vote_display(),
+            token=self.proposal.subject,
+            proposal=self.proposal)
