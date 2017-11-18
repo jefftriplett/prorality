@@ -20,3 +20,9 @@ django-contrib-comments = "*"
 
 
 [dev-packages]
+
+pytest = "*"
+pytest-django = "*"
+factory-boy = "*"
+django-test-plus = "*"
+ipdb = "*"
