@@ -20,7 +20,6 @@ class ProposalForm(ContentManageableModelForm):
             'body',
             'url',
             'closing_date',
-            'allow_comments',
         )
         widgets = {
             'subject': TextInput(),
