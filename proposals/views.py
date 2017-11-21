@@ -13,6 +13,15 @@ class ProposalMixin(object):
     model = models.Proposal
     slug_field = 'hashid'
 
+    def form_valid(self, form):
+        messages.add_message(self.request, messages.SUCCESS, self.success_message)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['organization_slug'] = self.kwargs.get('organization_slug')
+        return context
+
     def get_object(self):
         return get_object_or_404(models.Proposal,
                                  organization__slug=self.kwargs.get('organization_slug'),
@@ -21,10 +30,7 @@ class ProposalMixin(object):
 
 class ProposalCreate(LoginRequiredMixin, ProposalMixin, CreateView):
     form_class = forms.ProposalForm
-
-    def form_valid(self, form):
-        messages.add_message(self.request, messages.SUCCESS, 'Proposal was created')
-        return super().form_valid(form)
+    success_message = 'Proposal was created'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -34,12 +40,18 @@ class ProposalCreate(LoginRequiredMixin, ProposalMixin, CreateView):
 
 
 class ProposalDelete(LoginRequiredMixin, ProposalMixin, UserPassesTestMixin, DeleteView):
+    success_message = 'Proposal was deleted'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('proposals:proposal_list', kwargs={'organization_slug': self.kwargs.get('organization_slug')})
 
-    # def test_func(self):
-    #     return self.get_object() == self.request.user
+    def test_func(self):
+        return True
+        # return self.get_object() == self.request.user
 
 
 class ProposalDetail(LoginRequiredMixin, ProposalMixin, DetailView):
@@ -53,11 +65,6 @@ class ProposalDetail(LoginRequiredMixin, ProposalMixin, DetailView):
 
 class ProposalList(LoginRequiredMixin, ProposalMixin, ListView):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['organization_slug'] = self.kwargs.get('organization_slug', 'None')
-        return context
-
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(organization__slug=self.kwargs.get('organization_slug'))
@@ -66,10 +73,7 @@ class ProposalList(LoginRequiredMixin, ProposalMixin, ListView):
 
 class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
     form_class = forms.ProposalForm
-
-    def form_valid(self, form):
-        messages.add_message(self.request, messages.SUCCESS, 'Proposal was updated')
-        return super().form_valid(form)
+    success_message = 'Proposal was updated'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
