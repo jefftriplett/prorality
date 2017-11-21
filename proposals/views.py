@@ -95,10 +95,6 @@ class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
         return kwargs
 
 
-class ProposalVote(LoginRequiredMixin, ProposalMixin, DetailView):
-    template_name = 'proposals/proposal_detail.html'
-
-
 class VoteFormView(LoginRequiredMixin, FormView):
     form_class = forms.VoteForm
     success_url = '/thanks/'
