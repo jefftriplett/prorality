@@ -97,13 +97,20 @@ class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
 
 class VoteFormView(LoginRequiredMixin, FormView):
     form_class = forms.VoteForm
-    success_url = '/thanks/'
     template_name = 'proposals/proposal_detail.html'
 
     def form_valid(self, form):
         print(self.request.user.id)
         print(self.kwargs.get('organization_slug'))
         print(self.kwargs.get('hashid'))
+        print(form.cleaned_data['vote'])
+        vote, created = models.Vote.objects.update_or_create(
+            proposal__hashid=self.kwargs.get('hashid'),
+            user=self.request.user.id,
+            defaults={
+                'vote': form.cleaned_data['vote'],
+            }
+        )
         print(form.cleaned_data['vote'])
         return super(VoteFormView, self).form_valid(form)
 
