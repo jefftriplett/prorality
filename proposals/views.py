@@ -43,7 +43,7 @@ class ProposalDelete(LoginRequiredMixin, ProposalMixin, UserPassesTestMixin, Del
     success_message = 'Proposal was deleted'
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, self.success_message)
+        messages.add_message(self.request, messages.SUCCESS, self.success_message)
         return super().delete(request, *args, **kwargs)
 
     def get_success_url(self):
