@@ -99,9 +99,8 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 {% if user.is_authenticated %}
   {% get_comment_form for object as form %}
-  <form action="{% comment_form_target %}" method="POST">
+  <form action="{% comment_form_target %}" method="POST">{% csrf_token %}
   <div class="form-group">
-    {% csrf_token %}
     {{ form.comment }}
     {{ form.honeypot }}
     {{ form.content_type }}
