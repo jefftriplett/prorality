@@ -58,7 +58,7 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 {% block content %}
 
-<h2 class="display-3">{{ object.subject }}</h2>
+<h2 class="display-3">{{ object.subject }} ({{ object.get_status_display }})</h2>
 
 {% if object.closing_date %}
 <h4>{{ object.closing_date }} closing date ({{ object.closing_date|timeuntil }})</h4>

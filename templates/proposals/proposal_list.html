@@ -3,8 +3,39 @@
 {% block content %}
 
 <h3>Proposal List</h3>
+
+<div>
+  <ul class="nav nav-tabs nav-fill">
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'draft' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='draft' %}">
+        Draft
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'final' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='final' %}">
+        Final
+    </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'accepted' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='accepted' %}">
+        Accepted
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'rejected' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='rejected' %}">
+        Rejected
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if status == 'withdrawn' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='withdrawn' %}">
+        Withdrawn
+      </a>
+    </li>
+  </ul>
+</div>
+
 <ul>
-{% for object in  object_list %}
+{% for object in object_list %}
 <li><a href="{{ object.get_absolute_url }}">{{ object.subject }}</a></li>
 {% endfor %}
 </ul>

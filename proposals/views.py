@@ -65,9 +65,17 @@ class ProposalDetail(LoginRequiredMixin, ProposalMixin, DetailView):
 
 class ProposalList(LoginRequiredMixin, ProposalMixin, ListView):
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status'] = self.kwargs.get('status', None)
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(organization__slug=self.kwargs.get('organization_slug'))
+        status = self.kwargs.get('status', None)
+        if status:
+            queryset = queryset.filter(status=status)
         return queryset
 
 
