@@ -49,6 +49,9 @@ class Proposal(ContentManageable):
             'hashid': self.hashid,
         })
 
+    def get_accepting_votes(self):
+        return self.status in [self.STATUS_DRAFT, self.STATUS_FINAL]
+
     def get_proposal_vote_form_url(self):
         return reverse('proposals:proposal_vote_form', kwargs={
             'organization_slug': self.organization.slug,

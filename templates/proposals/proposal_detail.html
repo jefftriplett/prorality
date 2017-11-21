@@ -138,15 +138,11 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 </ul>
 {% endif %}
 
-<p>{{ object.organization.slug }}</p>
-
-<p>{{ object.hashid }}</p>
-
-
-<form action="{{ object.get_proposal_vote_form_url }}" method="post">
-  {% csrf_token %}
+{% if object.get_accepting_votes %}
+<form action="{{ object.get_proposal_vote_form_url }}" method="post">{% csrf_token %}
   {{ form.as_p}}
   <button type="submit">Vote</button>
 </form>
+{% endif %}
 
 {% endblock content %}
