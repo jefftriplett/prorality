@@ -84,6 +84,13 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 <hr>
 
+<div>
+<a class="btn btn-primary" href="{% url 'proposals:proposal_update' organization_slug=organization_slug hashid=object.hashid%}">Update Proposal</a>
+<a class="btn btn-danger" href="{% url 'proposals:proposal_delete' organization_slug=organization_slug hashid=object.hashid%}">Delete Proposal</a>
+</div>
+
+<hr>
+
 {% if object.allow_comments %}
 <!-- comments list -->
 
