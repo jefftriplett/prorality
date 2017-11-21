@@ -47,4 +47,4 @@ class ProposalForm(ContentManageableModelForm):
 
 
 class VoteForm(forms.Form):
-    vote = forms.ChoiceField(choices=models.VOTE_CHOICES)
+    vote = forms.ChoiceField(choices=models.Vote.VOTE_CHOICES)

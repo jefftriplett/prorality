@@ -22,21 +22,21 @@ class Proposal(ContentManageable):
     closing_date = models.DateField(null=True, blank=True)
     allow_comments = models.BooleanField(default=False)
 
-    STATUS_DRAFT = 1
-    STATUS_FINAL = 2
-    STATUS_ACCEPTED = 3
-    STATUS_REJECTED = 4
-    STATUS_SUPERSEDED = 5
-    STATUS_WITHDRAWN = 6
+    STATUS_DRAFT = 'draft'
+    STATUS_FINAL = 'final'
+    STATUS_WITHDRAWN = 'withdrawn'
+    STATUS_ACCEPTED = 'accepted'
+    STATUS_REJECTED = 'rejected'
+    STATUS_SUPERSEDED = 'superseded'
     STATUS_CHOICES = [
         (STATUS_DRAFT, 'Draft'),
         (STATUS_FINAL, 'Final'),
+        (STATUS_WITHDRAWN, 'Withdrawn'),
         (STATUS_ACCEPTED, 'Accepted'),
         (STATUS_REJECTED, 'Rejected'),
         # (STATUS_SUPERSEDED, 'Superseded'),
-        (STATUS_WITHDRAWN, 'Withdrawn'),
     ]
-    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    status = models.CharField(max_length=16, choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     history = HistoricalRecords(excluded_fields=['_body_rendered', 'body_markup_type'])
 
@@ -67,18 +67,23 @@ class Proposal(ContentManageable):
         return obj
 
 
-VOTE_CHOICES = (
-    (0, "+1: Yes, I agree"),
-    (1, "+0: I don't feel strongly about it, but I'm okay with this."),
-    (2, "-0: I won't get in the way, but I'd rather we didn't do this."),
-    (3, "-1: I object on the following grounds"),
-)
-
-
 class Vote(ContentManageable):
     proposal = models.ForeignKey('proposals.Proposal', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    vote = models.IntegerField(choices=VOTE_CHOICES)
+
+    VOTE_NONE = 0
+    VOTE_PLUS_ONE = 1
+    VOTE_PLUS_ZERO = 2
+    VOTE_MINUS_ZERO = 3
+    VOTE_MINUS_ONE = 4
+    VOTE_CHOICES = (
+        (VOTE_NONE, 'None'),
+        (VOTE_PLUS_ONE, "+1: Yes, I agree"),
+        (VOTE_PLUS_ZERO, "+0: I don't feel strongly about it, but I'm okay with this."),
+        (VOTE_MINUS_ZERO, "-0: I won't get in the way, but I'd rather we didn't do this."),
+        (VOTE_MINUS_ONE, "-1: I object on the following grounds"),
+    )
+    vote = models.IntegerField(choices=VOTE_CHOICES, default=VOTE_NONE)
 
     history = HistoricalRecords()
 
