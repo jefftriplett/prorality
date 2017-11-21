@@ -71,19 +71,17 @@ class Vote(ContentManageable):
     proposal = models.ForeignKey('proposals.Proposal', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
-    VOTE_NONE = 0
     VOTE_PLUS_ONE = 1
     VOTE_PLUS_ZERO = 2
     VOTE_MINUS_ZERO = 3
     VOTE_MINUS_ONE = 4
     VOTE_CHOICES = (
-        (VOTE_NONE, 'None'),
         (VOTE_PLUS_ONE, "+1: Yes, I agree"),
         (VOTE_PLUS_ZERO, "+0: I don't feel strongly about it, but I'm okay with this."),
         (VOTE_MINUS_ZERO, "-0: I won't get in the way, but I'd rather we didn't do this."),
         (VOTE_MINUS_ONE, "-1: I object on the following grounds"),
     )
-    vote = models.IntegerField(choices=VOTE_CHOICES, default=VOTE_NONE)
+    vote = models.IntegerField(choices=VOTE_CHOICES, null=True, blank=True)
 
     history = HistoricalRecords()
 
