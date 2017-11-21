@@ -11,12 +11,6 @@ from whatnots.models import ContentManageable
 
 DEFAULT_MARKUP_TYPE = getattr(settings, 'DEFAULT_MARKUP_TYPE', 'markdown')
 
-PROPOSAL_CHOICES = [
-    ('', ''),
-    ('', ''),
-    ('', ''),
-]
-
 
 class Proposal(ContentManageable):
     hashid = models.CharField(max_length=16, null=True, blank=True)
@@ -27,6 +21,22 @@ class Proposal(ContentManageable):
     url = models.TextField(null=True, blank=True)
     closing_date = models.DateField(null=True, blank=True)
     allow_comments = models.BooleanField(default=False)
+
+    STATUS_DRAFT = 1
+    STATUS_FINAL = 2
+    STATUS_ACCEPTED = 3
+    STATUS_REJECTED = 4
+    STATUS_SUPERSEDED = 5
+    STATUS_WITHDRAWN = 6
+    STATUS_CHOICES = [
+        (STATUS_DRAFT, 'Draft'),
+        (STATUS_FINAL, 'Final'),
+        (STATUS_ACCEPTED, 'Accepted'),
+        (STATUS_REJECTED, 'Rejected'),
+        # (STATUS_SUPERSEDED, 'Superseded'),
+        (STATUS_WITHDRAWN, 'Withdrawn'),
+    ]
+    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
     history = HistoricalRecords(excluded_fields=['_body_rendered', 'body_markup_type'])
 
