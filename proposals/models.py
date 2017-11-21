@@ -1,6 +1,8 @@
+from collections import OrderedDict
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.functional import cached_property
 from hashids import Hashids
 from markupfield.fields import MarkupField
 from simple_history.models import HistoricalRecords
@@ -61,6 +63,21 @@ class Proposal(ContentManageable):
     def get_hashid(self):
         hashids = Hashids(salt=settings.HASHID_SALT, min_length=settings.HASHID_MIN_LENGTH)
         return hashids.encode(self.id)
+
+    @cached_property
+    def positive_votes(self):
+        votes = Vote.objects.filter(proposal=self, vote=Vote.VOTE_PLUS_ONE).count()
+        return votes
+
+    @cached_property
+    def neutral_votes(self):
+        votes = Vote.objects.filter(proposal=self, vote__in=[Vote.VOTE_PLUS_ZERO, Vote.VOTE_MINUS_ZERO]).count()
+        return votes
+
+    @cached_property
+    def negative_votes(self):
+        votes = Vote.objects.filter(proposal=self, vote=Vote.VOTE_MINUS_ONE).count()
+        return votes
 
     def save(self, *args, **kwargs):
         obj = super().save(*args, **kwargs)

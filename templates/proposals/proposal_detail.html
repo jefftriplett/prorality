@@ -58,7 +58,7 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 {% block content %}
 
-<h2 class="display-3">{{ object.subject }} ({{ object.get_status_display }})</h2>
+<h2 class="display-4">{{ object.subject }} ({{ object.get_status_display }})</h2>
 
 {% if object.closing_date %}
 <h4>{{ object.closing_date }} closing date ({{ object.closing_date|timeuntil }})</h4>
@@ -85,8 +85,12 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 <hr>
 
 <div>
-<a class="btn btn-primary" href="{% url 'proposals:proposal_update' organization_slug=organization_slug hashid=object.hashid%}">Update Proposal</a>
-<a class="btn btn-danger" href="{% url 'proposals:proposal_delete' organization_slug=organization_slug hashid=object.hashid%}">Delete Proposal</a>
+<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_update' organization_slug=organization_slug hashid=object.hashid %}">Update Proposal</a>
+<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_delete' organization_slug=organization_slug hashid=object.hashid %}">Delete Proposal</a>
+<!--
+<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_draft' organization_slug=organization_slug hashid=object.hashid %}">Re-draft</a>
+<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_withdrawn' organization_slug=organization_slug hashid=object.hashid %}">Withdraw Proposal</a>
+-->
 </div>
 
 <hr>
@@ -130,18 +134,33 @@ sideComments = new SideComments('#commentable-area', currentUser, existingCommen
 
 <p>{{ object.vote_set.count }} vote{{ object.vote_set.count|pluralize }}</p>
 
-{% if object.vote_set.count %}
-<ul>
-    {% for vote in object.vote_set.all %}
-        <li>{{ vote }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+<table class="table table-hover table-sm table-striped">
+  <thead class="thead-inverse">
+    <tr>
+      <th>description</th>
+      <th>votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr scope="row">
+      <td>Total Binding +1 votes</td>
+      <td>{{ object.positive_votes }}</td>
+    </tr>
+    <tr scope="row">
+      <td>Total Binding  +0/-0 votes</td>
+      <td>{{ object.neutral_votes }}</td>
+    </tr>
+    <tr scope="row">
+      <td>Total Binding  -1 votes</td>
+      <td>{{ object.negative_votes }}</td>
+    </tr>
+  </tbody>
+</table>
 
 {% if object.get_accepting_votes %}
-<form action="{{ object.get_proposal_vote_form_url }}" method="post">{% csrf_token %}
-  {{ form.as_p}}
-  <button type="submit">Vote</button>
+<form action="{{ object.get_proposal_vote_form_url }}" method="post" novalidate>{% csrf_token %}
+  {% include 'includes/bs4_form.html' with form=form %}
+  <button type="submit" class="btn btn-primary">Vote</button>
 </form>
 {% endif %}
 

@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView, View
 from django.views.generic.edit import FormView
 
 from . import forms
@@ -79,6 +79,11 @@ class ProposalList(LoginRequiredMixin, ProposalMixin, ListView):
         return queryset
 
 
+class ProposalRawDetail(LoginRequiredMixin, ProposalMixin, DetailView):
+    content_type = 'text/plain'
+    template_name = 'proposals/proposal_raw_detail.html'
+
+
 class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
     form_class = forms.ProposalForm
     success_message = 'Proposal was updated'
@@ -95,9 +100,51 @@ class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
         return kwargs
 
 
-class VoteFormView(LoginRequiredMixin, FormView):
+class ChangeProposalStatus(LoginRequiredMixin, ProposalMixin, View):
+
+    def get(self, request, organization_slug, hashid):
+        proposal = get_object_or_404(models.Proposal, organization__slug=organization_slug, hashid=hashid)
+        proposal.status = self.new_status
+        proposal.save()
+        messages.add_message(self.request, messages.SUCCESS, self.success_message)
+        return redirect('proposals:proposal_detail', organization_slug=organization_slug, hashid=hashid)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.get_object()
+        return context
+
+
+class ProposalDraft(ChangeProposalStatus):
+    new_status = models.Proposal.STATUS_DRAFT
+    success_message = 'Your proposal been re-drafted.'
+
+
+class ProposalFinal(ChangeProposalStatus):
+    new_status = models.Proposal.STATUS_FINAL
+    success_message = 'Your proposal been published.'
+
+
+class ProposalWithdrawn(ChangeProposalStatus):
+    new_status = models.Proposal.STATUS_WITHDRAWN
+    success_message = 'Your proposal been withdrawn.'
+
+
+class VoteFormView(LoginRequiredMixin, ProposalMixin, FormView):
     form_class = forms.VoteForm
+    success_message = 'Your vote has been recorded.'
     template_name = 'proposals/proposal_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.get_object()
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        kwargs['organization_slug'] = self.kwargs.get('organization_slug')
+        return kwargs
 
     def form_valid(self, form):
         print(self.request.user.id)
