@@ -4,14 +4,11 @@
 
 <h3>Proposal {% if form_action == 'update' %}Update{% else %}Create{% endif %}</h3>
 
-<form action="" method="POST">{% csrf_token %}
-<div class="form-group">
-  {{ form.as_p }}
-</div>
-<div class="form-group">
+<form action="" method="post" novalidate>
+  {% csrf_token %}
+  {% include 'includes/bs4_form.html' with form=form %}
   <button type="submit" class="btn btn-primary">
     {% if form_action == 'update' %}Update Proposal{% else %}Add Proposal{% endif %}
   </button>
-</div>
 </form>
 {% endblock %}

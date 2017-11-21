@@ -51,6 +51,7 @@ INSTALLED_APPS += [
     'django_comments',
     'organizations',
     'simple_history',
+    'widget_tweaks',
 ]
 
 # Our apps

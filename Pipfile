@@ -17,6 +17,7 @@ django-organizations = "*"
 django-extensions = "*"
 hashids = "*"
 django-contrib-comments = "*"
+django-widget-tweaks = "*"
 
 
 [dev-packages]
