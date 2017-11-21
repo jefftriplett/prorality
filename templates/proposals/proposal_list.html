@@ -7,6 +7,10 @@
 {% for object in  object_list %}
 <li><a href="{{ object.get_absolute_url }}">{{ object.subject }}</a></li>
 {% endfor %}
-<ul>
+</ul>
+
+<div>
+<a class="btn btn-primary" href="{% url 'proposals:proposal_create' organization_slug=organization_slug %}">Create a Proposal</a>
+</div>
 
 {% endblock content %}

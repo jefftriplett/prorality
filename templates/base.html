@@ -45,6 +45,14 @@
         <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
       </div>
       -->
+      {% if messages %}
+          {% for message in messages %}
+          <div class="user-feedback{% if message.tags %} level-{{ message.tags }}{% endif %}">
+              <p{% if message.tags %} role="{{ message.tags }}"{% endif %}>{{ message }}</p>
+          </div>
+          {% endfor %}
+      {% endif %}
+
 
       <div class="jumbotron">
 {% block content %}{% endblock content %}
