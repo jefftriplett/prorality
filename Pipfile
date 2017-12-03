@@ -7,7 +7,6 @@ name = "pypi"
 
 [packages]
 
-django = "*"
 django-environ = "*"
 django-reversion = "*"
 django-simple-history = "*"
@@ -18,6 +17,7 @@ django-extensions = "*"
 hashids = "*"
 django-contrib-comments = "*"
 django-widget-tweaks = "*"
+django = "<2.0"
 
 
 [dev-packages]
