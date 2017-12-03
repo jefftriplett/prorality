@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -102,6 +101,7 @@ class Vote(ContentManageable):
         (VOTE_MINUS_ONE, "-1: I object on the following grounds"),
     )
     vote = models.CharField(max_length=16, choices=VOTE_CHOICES, null=True, blank=True)
+    reason = models.TextField(null=True, blank=True)
 
     history = HistoricalRecords()
 

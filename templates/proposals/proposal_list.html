@@ -5,7 +5,7 @@
 <h3>Proposal List</h3>
 
 <div>
-  <ul class="nav nav-tabs nav-fill">
+  <ul class="nav nav-tabs nav-justified">
     <li class="nav-item">
       <a class="nav-link {% if status == 'draft' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='draft' %}">
         Draft
@@ -31,14 +31,37 @@
         Withdrawn
       </a>
     </li>
+    <!--
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item {% if status == 'rejected' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='rejected' %}">
+          Rejected
+        </a>
+        <a class="dropdown-item {% if status == 'withdrawn' %}active{% endif %}" href="{% url 'proposals:proposal_list_by_status' organization_slug=organization_slug status='withdrawn' %}">
+          Withdrawn
+        </a>
+      </div>
+    -->
+    </li>
   </ul>
 </div>
 
-<ul>
+<div class="list-group">
 {% for object in object_list %}
-<li><a href="{{ object.get_absolute_url }}">{{ object.subject }}</a></li>
+  <a href="{{ object.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ object.subject }}</h5>
+      {% if object.closing_date %}
+      <small>{{ object.closing_date|timeuntil }}</small>
+      {% endif %}
+    </div>
+    {% comment %}
+    <small>Donec id elit non mi porta.</small>
+    {% endcomment %}
+  </a>
 {% endfor %}
-</ul>
+</div>
 
 <div>
 <a class="btn btn-primary" href="{% url 'proposals:proposal_create' organization_slug=organization_slug %}">Create a Proposal</a>
