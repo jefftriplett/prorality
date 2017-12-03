@@ -15,7 +15,6 @@ urlpatterns = [
 
     # third-party applications
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^comments/', include('django_comments.urls')),
     url(r'^invitations/', include(invitation_backend().get_urls())),
     url(r'^organizations/', include('organizations.urls')),
     url(r'^register/', include(registration_backend().get_urls())),

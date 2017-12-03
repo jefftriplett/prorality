@@ -54,7 +54,6 @@ INSTALLED_APPS += [
     'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
-    'django_comments',
     'organizations',
     'simple_history',
     'widget_tweaks',
