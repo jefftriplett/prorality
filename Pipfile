@@ -18,6 +18,7 @@ hashids = "*"
 django-widget-tweaks = "*"
 django-allauth = "*"
 django = "<2.0"
+rules = "*"
 
 
 [dev-packages]

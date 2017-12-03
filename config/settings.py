@@ -55,6 +55,7 @@ INSTALLED_APPS += [
     # 'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'organizations',
+    'rules',
     'simple_history',
     'widget_tweaks',
 ]
@@ -128,6 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
