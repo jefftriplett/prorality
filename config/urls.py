@@ -7,8 +7,11 @@ from organizations.backends import invitation_backend, registration_backend
 
 
 urlpatterns = [
+    # our applications
     url(r'^proposals/', include('proposals.urls', namespace='proposals')),
 
+    # third-party applications
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^comments/', include('django_comments.urls')),
     url(r'^invitations/', include(invitation_backend().get_urls())),
     url(r'^organizations/', include('organizations.urls')),

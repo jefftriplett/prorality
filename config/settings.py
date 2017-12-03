@@ -48,6 +48,12 @@ INSTALLED_APPS = [
 # Third-party apps
 
 INSTALLED_APPS += [
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    # 'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
     'django_comments',
     'organizations',
     'simple_history',
@@ -122,6 +128,32 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# LOGIN_URL = 'organization_list'
+LOGIN_REDIRECT_URL = 'organization_list'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
+    },
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
