@@ -17,6 +17,7 @@ django-extensions = "*"
 hashids = "*"
 django-contrib-comments = "*"
 django-widget-tweaks = "*"
+django-allauth = "*"
 django = "<2.0"
 
 
