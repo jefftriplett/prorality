@@ -11,6 +11,7 @@ urlpatterns = [
     # our applications
     url(r'^$', TemplateView.as_view(template_name='homepage.html'), name='homepage'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
+    url(r'^proposals/', include('proposals.urls', namespace='proposals')),
 
     # third-party applications
     url(r'^accounts/', include('allauth.urls')),
