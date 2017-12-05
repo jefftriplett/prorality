@@ -106,3 +106,4 @@ venv.bak/
 
 # Django
 *.sqlite3
+*.rdb
