@@ -54,8 +54,9 @@ INSTALLED_APPS += [
     'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    'django_celery_beat',
+    'django_celery_results',
     'organizations',
-    'rules',
     'simple_history',
     'widget_tweaks',
 ]
@@ -129,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
@@ -168,7 +168,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
