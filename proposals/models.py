@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.functional import cached_property
-from hashids import Hashids
+from hashid_field import HashidAutoField
 from markupfield.fields import MarkupField
 from simple_history.models import HistoricalRecords
 
@@ -14,7 +14,7 @@ DEFAULT_MARKUP_TYPE = getattr(settings, 'DEFAULT_MARKUP_TYPE', 'markdown')
 
 
 class Proposal(ContentManageable):
-    hashid = models.CharField(max_length=16, null=True, blank=True)
+    id = HashidAutoField(primary_key=True)
     organization = models.ForeignKey(Organization, null=True, blank=True)
     subject = models.TextField()
     body = MarkupField(default_markup_type=DEFAULT_MARKUP_TYPE,
@@ -47,7 +47,7 @@ class Proposal(ContentManageable):
     def get_absolute_url(self):
         return reverse('proposals:proposal_detail', kwargs={
             'organization_slug': self.organization.slug,
-            'hashid': self.hashid,
+            'pk': self.pk,
         })
 
     def get_accepting_votes(self):
@@ -56,12 +56,8 @@ class Proposal(ContentManageable):
     def get_proposal_vote_form_url(self):
         return reverse('proposals:proposal_vote_form', kwargs={
             'organization_slug': self.organization.slug,
-            'hashid': self.hashid,
+            'pk': self.id,
         })
-
-    def get_hashid(self):
-        hashids = Hashids(salt=settings.HASHID_SALT, min_length=settings.HASHID_MIN_LENGTH)
-        return hashids.encode(self.id)
 
     @cached_property
     def positive_votes(self):
@@ -77,13 +73,6 @@ class Proposal(ContentManageable):
     def negative_votes(self):
         votes = Vote.objects.filter(proposal=self, vote=Vote.VOTE_MINUS_ONE).count()
         return votes
-
-    def save(self, *args, **kwargs):
-        obj = super().save(*args, **kwargs)
-        if not self.hashid:
-            self.hashid = self.get_hashid()
-            self.save()
-        return obj
 
 
 class Vote(ContentManageable):

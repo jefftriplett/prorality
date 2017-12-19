@@ -11,7 +11,7 @@ from . import models
 
 class ProposalMixin(object):
     model = models.Proposal
-    slug_field = 'hashid'
+    slug_field = 'pk'
 
     def form_valid(self, form):
         messages.add_message(self.request, messages.SUCCESS, self.success_message)
@@ -25,7 +25,7 @@ class ProposalMixin(object):
     def get_object(self):
         return get_object_or_404(models.Proposal,
                                  organization__slug=self.kwargs.get('organization_slug'),
-                                 hashid=self.kwargs.get('hashid'))
+                                 pk=self.kwargs.get('pk'))
 
 
 class ProposalCreate(LoginRequiredMixin, ProposalMixin, CreateView):
@@ -102,12 +102,12 @@ class ProposalUpdate(LoginRequiredMixin, ProposalMixin, UpdateView):
 
 class ChangeProposalStatus(LoginRequiredMixin, ProposalMixin, View):
 
-    def get(self, request, organization_slug, hashid):
-        proposal = get_object_or_404(models.Proposal, organization__slug=organization_slug, hashid=hashid)
+    def get(self, request, organization_slug, pk):
+        proposal = get_object_or_404(models.Proposal, organization__slug=organization_slug, pk=pk)
         proposal.status = self.new_status
         proposal.save()
         messages.add_message(self.request, messages.SUCCESS, self.success_message)
-        return redirect('proposals:proposal_detail', organization_slug=organization_slug, hashid=hashid)
+        return redirect('proposals:proposal_detail', organization_slug=organization_slug, pk=pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -149,10 +149,10 @@ class VoteFormView(LoginRequiredMixin, ProposalMixin, FormView):
     def form_valid(self, form):
         print(self.request.user.id)
         print(self.kwargs.get('organization_slug'))
-        print(self.kwargs.get('hashid'))
+        print(self.kwargs.get('pk'))
         print(form.cleaned_data['vote'])
         vote, created = models.Vote.objects.update_or_create(
-            proposal__hashid=self.kwargs.get('hashid'),
+            proposal__pk=self.kwargs.get('pk'),
             user=self.request.user.id,
             defaults={
                 'vote': form.cleaned_data['vote'],
@@ -165,5 +165,5 @@ class VoteFormView(LoginRequiredMixin, ProposalMixin, FormView):
     def get_success_url(self):
         return reverse('proposals:proposal_detail', kwargs={
             'organization_slug': self.kwargs.get('organization_slug'),
-            'hashid': self.kwargs.get('hashid'),
+            'id': self.kwargs.get('id'),
         })

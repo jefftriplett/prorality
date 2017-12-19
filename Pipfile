@@ -14,7 +14,6 @@ django-markupfield = "*"
 Markdown = "*"
 django-organizations = "*"
 django-extensions = "*"
-hashids = "*"
 django-widget-tweaks = "*"
 django-allauth = "*"
 Django = "<2.0"
@@ -22,6 +21,7 @@ celery = "*"
 redis = "*"
 django_celery_beat = "*"
 django_celery_results = "*"
+django-hashid-field = "*"
 
 
 [dev-packages]

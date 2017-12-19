@@ -22,9 +22,6 @@ class ProposalAdmin(ContentManageableAdmin, SimpleHistoryAdmin):
     raw_id_fields = [
         'organization',
     ]
-    readonly_fields = [
-        'hashid',
-    ]
 
 
 @admin.register(models.Vote)

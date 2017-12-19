@@ -186,8 +186,7 @@ SITE_ID = 1
 
 # Our settings
 
-HASHID_SALT = env('HASHID_SALT', default='')
-HASHID_MIN_LENGTH = env('HASHID_MIN_LENGTH', default=12)
+HASHID_FIELD_SALT = env('HASHID_FIELD_SALT', default='')
 
 # Celery settings
 

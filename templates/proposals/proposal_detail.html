@@ -22,11 +22,11 @@
 <hr>
 
 <div>
-<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_update' organization_slug=organization_slug hashid=object.hashid %}">Update Proposal</a>
-<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_delete' organization_slug=organization_slug hashid=object.hashid %}">Delete Proposal</a>
+<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_update' organization_slug=organization_slug pk=object.pk %}">Update Proposal</a>
+<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_delete' organization_slug=organization_slug pk=object.pk %}">Delete Proposal</a>
 <!--
-<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_draft' organization_slug=organization_slug hashid=object.hashid %}">Re-draft</a>
-<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_withdrawn' organization_slug=organization_slug hashid=object.hashid %}">Withdraw Proposal</a>
+<a class="btn btn-sm btn-primary" href="{% url 'proposals:proposal_draft' organization_slug=organization_slug pk=object.pk %}">Re-draft</a>
+<a class="btn btn-sm btn-danger" href="{% url 'proposals:proposal_withdrawn' organization_slug=organization_slug pk=object.pk %}">Withdraw Proposal</a>
 -->
 </div>
 
