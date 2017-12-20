@@ -21,8 +21,6 @@ services:
       - DATABASE_URL=postgres://postgres@db/postgres
       - DEBUG=true
       - HASHID_FIELD_SALT=change-me-please
-      - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1
       - SECRET_KEY=make-one-up
     depends_on:
       - db
