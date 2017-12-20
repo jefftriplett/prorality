@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  db:
+    restart: always
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  web:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    command: bash -c "/code/manage.py migrate --noinput && /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - ALLOWED_HOSTS=*
+      - DATABASE_URL=postgres://postgres@db/postgres
+      - DEBUG=true
+      - HASHID_FIELD_SALT=change-me-please
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+      - SECRET_KEY=make-one-up
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
