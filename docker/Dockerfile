@@ -1,7 +1,5 @@
 FROM python:3.6.3
 
-EXPOSE 8000
-
 ENV PYTHONDONTWRITEBYTECODE 1 \
     PYTHONUNBUFFERED 1 \
     PYTHONPATH /code:$PYTHONPATH
@@ -16,6 +14,8 @@ RUN set -ex \
     && pipenv install --deploy --system \
     && pipenv install --deploy --system --dev
 
-ADD . /code/
+COPY . /code/
+
+EXPOSE 8000
 
 CMD manage.py runserver 0.0.0.0:8000
