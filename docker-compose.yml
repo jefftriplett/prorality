@@ -2,12 +2,10 @@ version: '3.3'
 
 services:
   db:
-    restart: always
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   web:
-    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/Dockerfile
