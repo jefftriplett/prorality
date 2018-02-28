@@ -21,8 +21,8 @@ celery = "*"
 redis = "*"
 django-celery-beat = "*"
 django-celery-results = "*"
-django-hashid-field = "*"
 "psycopg2" = "*"
+django-hashid-field = "*"
 
 
 [dev-packages]
