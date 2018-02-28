@@ -23,6 +23,7 @@ django-celery-beat = "*"
 django-celery-results = "*"
 "psycopg2" = "*"
 django-hashid-field = "*"
+"django-bootstrap4" = "*"
 
 
 [dev-packages]

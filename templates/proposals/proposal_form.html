@@ -1,14 +1,17 @@
 {% extends "proposals/base.html" %}
 
-{% block content %}
+{% load bootstrap4 %}
 
+{% block content %}
 <h3>Proposal {% if form_action == 'update' %}Update{% else %}Create{% endif %}</h3>
 
 <form action="" method="post" novalidate>
   {% csrf_token %}
-  {% include 'includes/bs4_form.html' with form=form %}
-  <button type="submit" class="btn btn-primary">
-    {% if form_action == 'update' %}Update Proposal{% else %}Add Proposal{% endif %}
-  </button>
+  {% bootstrap_form form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% if form_action == 'update' %}Update Proposal{% else %}Add Proposal{% endif %}
+    </button>
+  {% endbuttons %}
 </form>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "proposals/base.html" %}
 
+{% load bootstrap4 %}
 {% load static %}
 
 {% block content %}
@@ -60,10 +61,11 @@
 </table>
 
 {% if object.get_accepting_votes %}
-<form action="{{ object.get_proposal_vote_form_url }}" method="post" novalidate>{% csrf_token %}
-  {% include 'includes/bs4_form.html' with form=form %}
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
   <button type="submit" class="btn btn-primary">Vote</button>
-</form>
+  {% endbuttons %}
 {% endif %}
 
 {% endblock content %}

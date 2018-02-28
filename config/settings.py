@@ -54,6 +54,7 @@ INSTALLED_APPS += [
     'allauth.socialaccount.providers.github',
     # 'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    'bootstrap4',
     'django_celery_beat',
     'django_celery_results',
     'organizations',
