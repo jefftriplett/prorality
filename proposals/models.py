@@ -1,8 +1,9 @@
+import uuid
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.functional import cached_property
-from hashid_field import HashidAutoField
 from markupfield.fields import MarkupField
 from simple_history.models import HistoricalRecords
 
@@ -14,7 +15,7 @@ DEFAULT_MARKUP_TYPE = getattr(settings, 'DEFAULT_MARKUP_TYPE', 'markdown')
 
 
 class Proposal(ContentManageable):
-    id = HashidAutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     organization = models.ForeignKey(Organization, null=True, blank=True)
     subject = models.TextField()
     body = MarkupField(default_markup_type=DEFAULT_MARKUP_TYPE,
@@ -76,6 +77,7 @@ class Proposal(ContentManageable):
 
 
 class Vote(ContentManageable):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     proposal = models.ForeignKey('proposals.Proposal', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
